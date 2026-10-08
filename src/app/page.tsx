@@ -17,7 +17,7 @@ export default function GalleryPage() {
       {fontHrefs.map((h) => <link key={h} rel="stylesheet" href={h} />)}
       <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-[28px] font-semibold tracking-tight sm:text-[34px]">Caonyx templates</h1>
+          <h1 className="text-[28px] font-semibold tracking-tight sm:text-[34px]">Available Templates</h1>
         </div>
         <p className="text-sm tabular-nums text-mute">{built.length} built · {specOnly.length} spec only</p>
       </header>
