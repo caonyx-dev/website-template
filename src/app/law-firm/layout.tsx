@@ -1,10 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/law-firm/components/hero.css";
 
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-cormorant" });
-const sourceSans = Source_Sans_3({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-source-sans" });
+const cormorant = localFont({
+  src: [
+    { path: "../../fonts/cormorant-garamond/cormorant-garamond-variable.woff2", weight: "500 600", style: "normal" },
+  ],
+  variable: "--font-cormorant",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
+});
+const sourceSans = localFont({
+  src: [
+    { path: "../../fonts/source-sans-3/source-sans-3-variable.woff2", weight: "400 600", style: "normal" },
+  ],
+  variable: "--font-source-sans",
+  display: "swap",
+});
 
 // The page is warm ivory end to end; only the consultation card and the footer are oxblood.
 export const viewport: Viewport = { themeColor: "#FBF8F3" };

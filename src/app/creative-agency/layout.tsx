@@ -1,9 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Unbounded, Albert_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 
-const display = Unbounded({ subsets: ["latin"], weight: ["700"], variable: "--font-unbounded" });
-const body = Albert_Sans({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-albert" });
+const display = localFont({
+  src: [
+    { path: "../../fonts/unbounded/unbounded-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-unbounded",
+  display: "swap",
+});
+const body = localFont({
+  src: [
+    { path: "../../fonts/albert-sans/albert-sans-variable.woff2", weight: "400 700", style: "normal" },
+  ],
+  variable: "--font-albert",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = { title: "[Agency] · Creative agency", description: "Identity, campaigns, motion and web for brands that would rather be noticed than safe." };

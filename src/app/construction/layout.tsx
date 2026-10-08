@@ -1,9 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Barlow_Condensed, Barlow } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 
-const display = Barlow_Condensed({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-barlow-condensed" });
-const body = Barlow({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-barlow" });
+const display = localFont({
+  src: [
+    { path: "../../fonts/barlow-condensed/barlow-condensed-600.woff2", weight: "600", style: "normal" },
+    { path: "../../fonts/barlow-condensed/barlow-condensed-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-barlow-condensed",
+  display: "swap",
+});
+const body = localFont({
+  src: [
+    { path: "../../fonts/barlow/barlow-400.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/barlow/barlow-500.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-barlow",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#F5F5F2" };
 

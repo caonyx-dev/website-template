@@ -1,10 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import SmoothScroll from "@/components/SmoothScroll";
 
-const display = Space_Grotesk({ subsets: ["latin"], weight: ["500"], variable: "--font-space-grotesk" });
-const body = Inter({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-inter" });
+const display = localFont({
+  src: [
+    { path: "../../fonts/space-grotesk/space-grotesk-500.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+const body = localFont({
+  src: [
+    { path: "../../fonts/inter/inter-variable.woff2", weight: "400 500", style: "normal" },
+  ],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#F7F5F0" };
 

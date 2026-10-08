@@ -1,10 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Heebo, Nunito_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/dental-clinic/components/hero.css";
 
-const heebo = Heebo({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-heebo" });
-const nunito = Nunito_Sans({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-nunito-sans" });
+const heebo = localFont({
+  src: [
+    { path: "../../fonts/heebo/heebo-variable.woff2", weight: "500 800", style: "normal" },
+  ],
+  variable: "--font-heebo",
+  display: "swap",
+});
+const nunito = localFont({
+  src: [
+    { path: "../../fonts/nunito-sans/nunito-sans-variable.woff2", weight: "400 700", style: "normal" },
+  ],
+  variable: "--font-nunito-sans",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = { title: "[Clinic] · Dental clinic", description: "Gentle, modern dentistry for the whole family: check-ups, cosmetic dentistry, children's dentistry and implants." };

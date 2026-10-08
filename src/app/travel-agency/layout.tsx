@@ -1,10 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/travel-agency/components/hero.css";
 
-const serif = DM_Serif_Display({ subsets: ["latin"], weight: ["400"], variable: "--font-dm-serif" });
-const sans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-dm-sans" });
+const serif = localFont({
+  src: [
+    { path: "../../fonts/dm-serif-display/dm-serif-display-400.woff2", weight: "400", style: "normal" },
+  ],
+  variable: "--font-dm-serif",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
+});
+const sans = localFont({
+  src: [
+    { path: "../../fonts/dm-sans/dm-sans-variable.woff2", weight: "400 700", style: "normal" },
+  ],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = {

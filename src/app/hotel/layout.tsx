@@ -1,10 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Marcellus, Jost } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/hotel/components/hero.css";
 
-const marcellus = Marcellus({ subsets: ["latin"], weight: "400", variable: "--font-marcellus" });
-const jost = Jost({ subsets: ["latin"], weight: ["300", "400", "500"], variable: "--font-jost" });
+const marcellus = localFont({
+  src: [
+    { path: "../../fonts/marcellus/marcellus-400.woff2", weight: "400", style: "normal" },
+  ],
+  variable: "--font-marcellus",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
+});
+const jost = localFont({
+  src: [
+    { path: "../../fonts/jost/jost-variable.woff2", weight: "300 500", style: "normal" },
+  ],
+  variable: "--font-jost",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#1B2A49" };
 export const metadata: Metadata = { title: "[Hotel] · Boutique hotel", description: "Rooms and suites, dining, spa and a quiet welcome in the heart of [Town]. Book direct for the best rate." };

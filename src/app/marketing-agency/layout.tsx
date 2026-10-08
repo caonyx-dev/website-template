@@ -1,11 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, Instrument_Sans, Space_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/marketing-agency/components/hero.css";
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"], variable: "--font-syne" });
-const instrument = Instrument_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-instrument" });
-const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-space-mono" });
+const syne = localFont({
+  src: [
+    { path: "../../fonts/syne/syne-variable.woff2", weight: "700 800", style: "normal" },
+  ],
+  variable: "--font-syne",
+  display: "swap",
+});
+const instrument = localFont({
+  src: [
+    { path: "../../fonts/instrument-sans/instrument-sans-variable.woff2", weight: "400 600", style: "normal" },
+  ],
+  variable: "--font-instrument",
+  display: "swap",
+});
+const mono = localFont({
+  src: [
+    { path: "../../fonts/space-mono/space-mono-400.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/space-mono/space-mono-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-space-mono",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFDF7" };
 export const metadata: Metadata = { title: "[Agency] · Digital marketing", description: "A small strategy and performance studio. Brand, web and campaigns for companies that need the numbers to move. Book a strategy call." };

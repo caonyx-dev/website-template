@@ -1,10 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/finance-accounting/components/hero.css";
 
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-dm-sans" });
-const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-plex-mono" });
+const dmSans = localFont({
+  src: [
+    { path: "../../fonts/dm-sans/dm-sans-variable.woff2", weight: "400 700", style: "normal" },
+  ],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+const plexMono = localFont({
+  src: [
+    { path: "../../fonts/ibm-plex-mono/ibm-plex-mono-400.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/ibm-plex-mono/ibm-plex-mono-500.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#132629" };
 export const metadata: Metadata = { title: "[Practice] · Accounting, tax and advisory", description: "Fixed-fee accounting, tax and advisory for small businesses and individuals, with a named accountant and every deadline tracked." };

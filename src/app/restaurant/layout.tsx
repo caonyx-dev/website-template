@@ -1,13 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Karla } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/restaurant/components/hero.css";
 
-// Playfair Display is a variable font. Asking for an explicit weight list alongside two styles makes Turbopack
-// emit four static faces, and resolving them fails the production build ("next/font/google queries have exactly
-// one entry"); the variable axis covers 500 and 600 from one file per style.
-const playfair = Playfair_Display({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-playfair" });
-const karla = Karla({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-karla" });
+const playfair = localFont({
+  src: [
+    { path: "../../fonts/playfair-display/playfair-display-variable.woff2", weight: "500 600", style: "normal" },
+    { path: "../../fonts/playfair-display/playfair-display-variable-italic.woff2", weight: "500 600", style: "italic" },
+  ],
+  variable: "--font-playfair",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
+});
+const karla = localFont({
+  src: [
+    { path: "../../fonts/karla/karla-variable.woff2", weight: "400 500", style: "normal" },
+  ],
+  variable: "--font-karla",
+  display: "swap",
+});
 
 // The page itself is cream; only the 40px contact strip is dark, so the browser chrome matches the body.
 export const viewport: Viewport = { themeColor: "#FBF7EF" };

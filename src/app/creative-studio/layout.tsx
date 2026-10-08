@@ -1,9 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/creative-studio/components/hero.css";
 
-const manrope = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-manrope" });
+const manrope = localFont({
+  src: [
+    { path: "../../fonts/manrope/manrope-variable.woff2", weight: "400 700", style: "normal" },
+  ],
+  variable: "--font-manrope",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = { title: "[Studio] · Creative studio", description: "High-performing digital design that elevates brands and improves conversion." };

@@ -1,12 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Oswald, Work_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/gym/components/hero.css";
 import DarkRoot from "@/templates/gym/components/DarkRoot";
 import Cursor from "@/templates/gym/components/Cursor";
 
-const oswald = Oswald({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-oswald" });
-const workSans = Work_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-work-sans" });
+const oswald = localFont({
+  src: [
+    { path: "../../fonts/oswald/oswald-variable.woff2", weight: "500 700", style: "normal" },
+  ],
+  variable: "--font-oswald",
+  display: "swap",
+});
+const workSans = localFont({
+  src: [
+    { path: "../../fonts/work-sans/work-sans-variable.woff2", weight: "400 600", style: "normal" },
+  ],
+  variable: "--font-work-sans",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#0B0F0A", colorScheme: "dark" };
 export const metadata: Metadata = { title: "[Gym] · Train smarter", description: "Coached classes, modern equipment and flexible memberships. Start with a free trial." };

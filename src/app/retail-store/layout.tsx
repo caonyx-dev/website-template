@@ -1,10 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins, Mulish } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/retail-store/components/hero.css";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-poppins" });
-const mulish = Mulish({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-mulish" });
+const poppins = localFont({
+  src: [
+    { path: "../../fonts/poppins/poppins-600.woff2", weight: "600", style: "normal" },
+    { path: "../../fonts/poppins/poppins-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-poppins",
+  display: "swap",
+});
+const mulish = localFont({
+  src: [
+    { path: "../../fonts/mulish/mulish-variable.woff2", weight: "400 700", style: "normal" },
+  ],
+  variable: "--font-mulish",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = {

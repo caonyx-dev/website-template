@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geist = localFont({
+  src: [
+    { path: "../fonts/geist/geist-variable.woff2", weight: "400 600", style: "normal" },
+  ],
+  variable: "--font-geist-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: { default: "Caonyx templates", template: "%s · Caonyx templates" },

@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 
-const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "900"], variable: "--font-outfit" });
+const outfit = localFont({
+  src: [
+    { path: "../../fonts/outfit/outfit-variable.woff2", weight: "300 900", style: "normal" },
+  ],
+  variable: "--font-outfit",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = { title: "[Company] · [Sector] solutions", description: "[Company] helps organisations in [sector] run critical operations with confidence." };

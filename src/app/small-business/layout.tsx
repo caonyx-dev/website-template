@@ -1,10 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit, Open_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/small-business/components/hero.css";
 
-const outfit = Outfit({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-outfit" });
-const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-open-sans" });
+const outfit = localFont({
+  src: [
+    { path: "../../fonts/outfit/outfit-variable.woff2", weight: "600 700", style: "normal" },
+  ],
+  variable: "--font-outfit",
+  display: "swap",
+});
+const openSans = localFont({
+  src: [
+    { path: "../../fonts/open-sans/open-sans-variable.woff2", weight: "400 700", style: "normal" },
+  ],
+  variable: "--font-open-sans",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = {

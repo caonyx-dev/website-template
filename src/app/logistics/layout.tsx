@@ -1,11 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Public_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/logistics/components/hero.css";
 
-const archivo = Archivo({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-archivo" });
-const publicSans = Public_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-public-sans" });
-const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains" });
+const archivo = localFont({
+  src: [
+    { path: "../../fonts/archivo/archivo-variable.woff2", weight: "600 700", style: "normal" },
+  ],
+  variable: "--font-archivo",
+  display: "swap",
+});
+const publicSans = localFont({
+  src: [
+    { path: "../../fonts/public-sans/public-sans-variable.woff2", weight: "400 600", style: "normal" },
+  ],
+  variable: "--font-public-sans",
+  display: "swap",
+});
+const mono = localFont({
+  src: [
+    { path: "../../fonts/jetbrains-mono/jetbrains-mono-variable.woff2", weight: "400 500", style: "normal" },
+  ],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = { title: "[Company] · Freight and logistics", description: "Road, sea and rail freight with live tracking, transparent pricing and a named coordinator on every account. Track a consignment or request a quote." };

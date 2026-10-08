@@ -1,10 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Sans, Kanit } from "next/font/google";
+import localFont from "next/font/local";
 import { getTemplate, tokenStyle } from "@/lib/templates";
 import "@/templates/tech-startup/components/hero.css";
 
-const instrument = Instrument_Sans({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-instrument" });
-const kanit = Kanit({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-kanit" });
+const instrument = localFont({
+  src: [
+    { path: "../../fonts/instrument-sans/instrument-sans-variable.woff2", weight: "500 600", style: "normal" },
+  ],
+  variable: "--font-instrument",
+  display: "swap",
+});
+const kanit = localFont({
+  src: [
+    { path: "../../fonts/kanit/kanit-400.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/kanit/kanit-500.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-kanit",
+  display: "swap",
+});
 
 export const viewport: Viewport = { themeColor: "#FFFFFF" };
 export const metadata: Metadata = {
