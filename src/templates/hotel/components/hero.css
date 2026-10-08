@@ -1,0 +1,14 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+/* Hotel load sequence: fades only. The first slide fades in slowly, the arched panel fades up after it, the nav follows. */
+.hotel-fade { animation: hotel-fade 1.6s ease-in-out both; }
+.hotel-up { animation: hotel-up 1.1s cubic-bezier(.4,0,.2,1) .5s both; }
+.hotel-in { animation: hotel-in .9s cubic-bezier(.4,0,.2,1) both; }
+@keyframes hotel-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hotel-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes hotel-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .hotel-fade, .hotel-up, .hotel-in { animation: none; } }
+
+/* Welcome section (Welcome.tsx): the photographs that scroll over the pinned statement. Their geometry comes
+   from custom properties so phones can use wider, simpler placements without inline styles winning. */
+.hotel-slot { position: absolute; top: var(--top); left: var(--left); width: var(--w); aspect-ratio: var(--ar); }
+@media (max-width: 767px) { .hotel-slot { top: var(--tm); left: var(--lm); width: var(--wm); } }

@@ -1,0 +1,14 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+/* Hero load sequence: the photograph rises and settles, the red slashes slide in, the giant letters slam in through masks, figures rise. */
+.gym-photo { animation: gym-photo 1.3s cubic-bezier(.16,1,.3,1) both; }
+.gym-slash { animation: gym-slash 1s cubic-bezier(.16,1,.3,1) .2s both; }
+.gym-letter { display: inline-block; animation: gym-letter .7s cubic-bezier(.16,1,.3,1) both; }
+.gym-rise { animation: gym-rise .7s cubic-bezier(.16,1,.3,1) both; }
+@keyframes gym-photo { from { clip-path: inset(100% 0 0 0); transform: scale(1.12); } to { clip-path: inset(0 0 0 0); transform: none; } }
+@keyframes gym-slash { from { transform: translateX(-120%) skewX(-24deg); } to { transform: translateX(0) skewX(-24deg); } }
+@keyframes gym-letter { from { transform: translateY(110%) scale(1.15); } to { transform: none; } }
+@keyframes gym-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .gym-photo, .gym-slash, .gym-letter, .gym-rise { animation: none; } .gym-slash { transform: skewX(-24deg); } }
+
+/* Custom cursor (Cursor.tsx): once it is live the native cursor is hidden on fine pointers. */
+@media (hover: hover) and (pointer: fine) { html.gym-cursor, html.gym-cursor * { cursor: none !important; } }

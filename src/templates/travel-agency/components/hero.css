@@ -1,0 +1,76 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+
+/* --- The sky ----------------------------------------------------------- */
+/* The reference opens on a pale sky rather than a photograph: a soft vertical wash with two slow
+   cloud forms drifting across it. Drawn in CSS so it costs nothing and scales to any width. */
+.tv-sky {
+  background:
+    radial-gradient(60% 46% at 12% 16%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%),
+    radial-gradient(44% 38% at 86% 10%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
+    radial-gradient(52% 42% at 72% 72%, rgba(255,255,255,.75), rgba(255,255,255,0) 72%),
+    linear-gradient(180deg, var(--t-sky-top) 0%, var(--t-sky-mid) 52%, var(--t-canvas-plain) 100%);
+}
+/* The clouds settle once and stop. An endless drift would be motion that starts by itself and never
+   ends, which needs a pause control the hero has nowhere sensible to put. */
+.tv-cloud { animation: tv-settle 2.4s cubic-bezier(.16,1,.3,1) both; }
+.tv-cloud-2 { animation: tv-settle 3.2s cubic-bezier(.16,1,.3,1) both; }
+@keyframes tv-settle { from { transform: translate3d(-3%, 1%, 0); } to { transform: none; } }
+
+/* --- The opening ------------------------------------------------------- */
+/* The poster headline rises line by line through its own mask; everything else fades up after it. */
+.tv-line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+.tv-line > span { display: block; animation: tv-rise 1.05s cubic-bezier(.16,1,.3,1) both; }
+.tv-up { animation: tv-up .8s cubic-bezier(.16,1,.3,1) both; }
+@keyframes tv-rise { from { transform: translateY(104%); } to { transform: none; } }
+@keyframes tv-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* The paper plane traces its curve once, then stays. */
+.tv-path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: tv-draw 2.2s cubic-bezier(.4,0,.2,1) .5s both; }
+@keyframes tv-draw { to { stroke-dashoffset: 0; } }
+
+/* The round "watch" badge turns the way the reference's does, but only while the pointer or the keyboard
+   is on it — a disc spinning for ever on its own is motion with no way to stop it. */
+.tv-disc:hover .tv-spin, .tv-disc:focus-visible .tv-spin { animation: tv-spin 9s linear infinite; }
+@keyframes tv-spin { to { transform: rotate(360deg); } }
+
+/* --- The word band ----------------------------------------------------- */
+/* One marquee on the page; it pauses on hover and focus and by its button, and stands still under
+   reduced motion. The track is duplicated, so the loop is seamless at -50%. */
+.tv-marquee { display: inline-flex; animation: tv-scroll 38s linear infinite; }
+.tv-marquee[data-paused="true"], .tv-marquee:hover, .tv-marquee:focus-within { animation-play-state: paused; }
+@keyframes tv-scroll { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+
+/* --- Cards ------------------------------------------------------------- */
+/* The DESIGN.md's airy, blue-tinted lift — never a grey shadow. The shadow sits on a pseudo-element
+   whose opacity fades, so only transform and opacity are animated. */
+.tv-lift { position: relative; transition: transform .3s cubic-bezier(.16,1,.3,1); }
+.tv-lift::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+  box-shadow: rgba(12,26,43,.04) 0 2px 6px 0, rgba(2,132,199,.10) 0 14px 34px -10px;
+}
+@media (hover: hover) {
+  .tv-lift:hover, .tv-lift:focus-within { transform: translateY(-4px); }
+  .tv-lift:hover::after, .tv-lift:focus-within::after { opacity: 1; }
+}
+
+/* --- Focus rings ------------------------------------------------------- */
+/* Azure is 2.6:1 on a dark photograph, so bands that sit over one take a white ring instead. */
+.tv-on-dark { --t-focus: #FFFFFF; }
+
+.tv-root { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+/* The header floats over the page, so anything the keyboard scrolls to must clear it. */
+.tv-root :focus-visible { scroll-margin-top: 120px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tv-cloud, .tv-cloud-2, .tv-line > span, .tv-up, .tv-path, .tv-marquee { animation: none; }
+  .tv-disc:hover .tv-spin, .tv-disc:focus-visible .tv-spin { animation: none; }
+  .tv-path { stroke-dashoffset: 0; }
+  .tv-lift, .tv-lift::after { transition: none; }
+  .tv-lift:hover, .tv-lift:focus-within { transform: none; }
+}

@@ -1,0 +1,54 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+
+/* --- The opening ------------------------------------------------------- */
+/* The hero photograph settles out of a slow zoom; the poster headline rises word by word through masks. */
+/* 1.8s, not the reference's long drift: the project rule is an authored opening under two seconds, and a
+   slow zoom with no pause control would also be autoplaying motion for longer than five. */
+.nim-zoom { animation: nim-zoom 1.8s cubic-bezier(.22,1,.36,1) both; }
+.nim-line { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.nim-line > span { display: block; animation: nim-rise 1.1s cubic-bezier(.16,1,.3,1) both; }
+.nim-up { animation: nim-up .85s cubic-bezier(.16,1,.3,1) both; }
+@keyframes nim-zoom { from { transform: scale(1.14); } to { transform: none; } }
+@keyframes nim-rise { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes nim-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* --- The running tile in the about band -------------------------------- */
+/* One marquee on the page; it pauses on hover and focus and stands still under reduced motion. */
+.nim-marquee { display: block; animation: nim-scroll 9s linear infinite; }
+.nim-marquee[data-paused="true"], .nim-marquee:hover, .nim-marquee:focus-within { animation-play-state: paused; }
+@keyframes nim-scroll { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+
+/* --- The acid-yellow highlighter --------------------------------------- */
+/* The DESIGN.md's pen: a swipe of colour behind a key phrase, drawn rather than filled. */
+.nim-mark {
+  background-image: linear-gradient(var(--t-accent), var(--t-accent));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 0% 36%;
+  animation: nim-mark 1s cubic-bezier(.16,1,.3,1) .5s both;
+  padding-inline: .08em;
+}
+@keyframes nim-mark { to { background-size: 100% 36%; } }
+
+/* --- The percentage bars in the bento grid ----------------------------- */
+/* The bar is full width in the server render and with JavaScript off; the sweep only exists once client code
+   marks the panel as in view, so no start state is ever expressed in CSS alone. */
+.nim-bar { transform-origin: left center; }
+[data-nim-bars="in"] .nim-bar { animation: nim-bar 1.4s cubic-bezier(.16,1,.3,1) both; }
+@keyframes nim-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* --- Focus rings ------------------------------------------------------- */
+/* Violet is 1.9:1 on the ink bands, so dark grounds take the acid-yellow ring instead. */
+.nim-on-dark { --t-focus: var(--t-accent); }
+
+/* The nav floats over the page, so anything the keyboard scrolls to must clear it — `scroll-margin-top`
+   on `[id]` alone covers anchor jumps but not a control Tab brings into view. */
+.nim-root :focus-visible { scroll-margin-top: 112px; }
+
+.nim-root { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nim-zoom, .nim-line > span, .nim-up, [data-nim-bars="in"] .nim-bar { animation: none; }
+  .nim-marquee { animation: none; }
+  .nim-mark { animation: none; background-size: 100% 36%; }
+}

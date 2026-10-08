@@ -1,0 +1,53 @@
+[
+ {
+  "file": "hero-media.jpg",
+  "source": "generated",
+  "model": "flux-3-image",
+  "license": "original work generated for this template",
+  "note": "Abstract iridescent filaments, orange and teal on near-black."
+ },
+ {
+  "file": "hands.jpg",
+  "source": "generated",
+  "model": "flux-3-image",
+  "license": "original work generated for this template",
+  "note": "Robotic hand reaching toward a human hand on white."
+ },
+ {
+  "file": "capability.jpg",
+  "source": "generated",
+  "model": "flux-3-image",
+  "license": "original work generated for this template",
+  "note": "Abstract navy and crimson fluid forms."
+ },
+ {
+  "file": "runtime.jpg",
+  "source": "generated",
+  "model": "flux-3-image",
+  "license": "original work generated for this template",
+  "note": "Abstract black, cyan and red liquid forms."
+ },
+ {
+  "file": "explainer.jpg",
+  "source": "generated",
+  "model": "flux-3-image",
+  "license": "original work generated for this template",
+  "note": "Wide abstract black and red forms with cyan highlights."
+ },
+ {
+  "file": "news-1.jpg",
+  "title": "Man Working",
+  "source": "stocksnap",
+  "license": "cc0",
+  "creator": "Burst",
+  "page": "https://stocksnap.io/photo/man-working-UN5XQREKKP"
+ },
+ {
+  "file": "avatars.jpg",
+  "title": "Business People",
+  "source": "stocksnap",
+  "license": "cc0",
+  "creator": "Direct Media",
+  "page": "https://stocksnap.io/photo/business-people-IDYMLGDH3I"
+ }
+]

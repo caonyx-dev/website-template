@@ -1,0 +1,68 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+
+/* --- The opening ------------------------------------------------------- */
+/* The reference's slideshow: the photograph holds still and the copy block rises in, one element at a time.
+   Nothing here sets a start state the server render depends on — the keyframes run on mount only. */
+.rst-rise > * { animation: rst-rise .7s cubic-bezier(.16,1,.3,1) both; }
+.rst-rise > :nth-child(2) { animation-delay: .1s; }
+.rst-rise > :nth-child(3) { animation-delay: .2s; }
+.rst-rise > :nth-child(4) { animation-delay: .3s; }
+@keyframes rst-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* The slide photograph drifts very slightly while its slide is the active one. */
+.rst-pan { animation: rst-pan 9s ease-out both; }
+@keyframes rst-pan { from { transform: scale(1.05); } to { transform: scale(1); } }
+
+/* --- The promo strip --------------------------------------------------- */
+/* The yellow band's message changes on a timer; each new message fades up rather than cutting. */
+.rst-promo-msg { animation: rst-fade .45s ease-out both; }
+@keyframes rst-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* --- The cart drawer --------------------------------------------------- */
+.rst-drawer { animation: rst-slide .32s cubic-bezier(.16,1,.3,1) both; }
+.rst-scrim { animation: rst-scrim .32s ease-out both; }
+@keyframes rst-slide { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes rst-scrim { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- Product cards ----------------------------------------------------- */
+/* The DESIGN.md's single shadow tier, which is a hover reward rather than a resting state. The shadow
+   lives on a pseudo-element whose opacity fades, so only transform and opacity are ever animated. */
+.rst-card { position: relative; transition: transform .25s ease; }
+.rst-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s ease;
+  box-shadow: rgba(24,24,27,.04) 0 1px 2px 0, rgba(24,24,27,.08) 0 6px 16px -2px, rgba(157,23,77,.06) 0 12px 28px -8px;
+}
+@media (hover: hover) {
+  .rst-card:hover, .rst-card:focus-within { transform: translateY(-2px); }
+  .rst-card:hover::after, .rst-card:focus-within::after { opacity: 1; }
+}
+
+/* The quick-add control slides up over the foot of the photograph on hover, and is simply always
+   there where there is no pointer to hover with. */
+.rst-quickadd { transition: transform .25s ease, opacity .25s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .rst-quickadd { opacity: 0; transform: translateY(8px); }
+  .rst-card:hover .rst-quickadd, .rst-card:focus-within .rst-quickadd { opacity: 1; transform: none; }
+}
+
+/* --- Focus rings ------------------------------------------------------- */
+/* Mulberry is 2.2:1 on the ink band, so the dark strip takes a white ring instead. */
+.rst-on-dark { --t-focus: #FFFFFF; }
+
+.rst-root { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+/* The header is sticky and the tab bar is pinned to the foot on phones, so anything the keyboard
+   scrolls to has to clear both. */
+.rst-root :focus-visible { scroll-margin-top: 140px; scroll-margin-bottom: calc(5rem + env(safe-area-inset-bottom)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rst-rise > *, .rst-pan, .rst-promo-msg, .rst-drawer, .rst-scrim { animation: none; }
+  .rst-card, .rst-card::after, .rst-quickadd { transition: none; }
+  .rst-card:hover, .rst-card:focus-within { transform: none; }
+  .rst-quickadd { opacity: 1; transform: none; }
+}

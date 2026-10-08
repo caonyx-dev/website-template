@@ -1,0 +1,48 @@
+## Design workflow
+- DESIGN.md and PRODUCT.md are the source of truth for all visual decisions. Never override them silently.
+- Content first: before designing a new page, draft the real copy and section list and wait for my approval.
+- Reference sites: when I give a URL or screenshot as the target look, capture it (headless Chrome at 1440px and 390px, plus its HTML for fonts, colours and scripts), analyse its section structure, components, type scale, radii, shadows and motion, then rebuild our page in that language using our template's own tokens, fonts and content. Record the resulting changes as a dated revision section in the template's DESIGN.md rather than overriding it silently. The Antra theme (demo2.themelexus.com/antra) is the current reference for section rhythm and component style across templates.
+- New pages/sections: use design-taste-frontend to build. If I provide an image or ask for a visual reference, use image-to-code first.
+- After the first build, stop and show me before refining.
+- Improving existing UI: use Impeccable commands (critique first, then the specific fix). Do not also apply taste-skill rules.
+- Before saying any UI work is done:
+  1. View the rendered page at desktop (1440px) and mobile (390px) widths and fix anything broken (use impeccable adapt for responsive issues).
+  2. Run web-design-guidelines on the changed files and fix all findings.
+- Before launch: run impeccable harden and impeccable optimize.
+
+## Templates
+- Each template in templates/ uses only the DESIGN.md and PRODUCT.md inside its own folder. Never use a DESIGN.md or PRODUCT.md from another template or from the project root.
+
+## Stack and project layout
+- The repo root is one Next.js app (Next 16 App Router, TypeScript, Tailwind v4, `src/` directory). Run `npm run dev` and open http://localhost:3000 (or the port Next reports).
+- `/` is the gallery. Each template is a route at `/<slug>` (for example `/architect`). Templates with a built page have `src/app/<slug>/layout.tsx` + `page.tsx`, a content module at `src/templates/<slug>/content.tsx` typed as `SiteContent` (`src/lib/content.ts`), and an entry in `BUILT` in `src/lib/templates.ts`; every other slug is served by `src/app/[slug]/page.tsx` as a style sheet rendered from its DESIGN.md.
+- `src/lib/templates.ts` reads `templates/<slug>/DESIGN.md` and `PRODUCT.md` at render time and derives tokens. A template layout sets those tokens as `--t-*` custom properties; `src/app/globals.css` maps them to Tailwind utilities (`bg-canvas`, `text-ink`, `text-accent`, `bg-dark`/`text-on-dark` for graphite bands, `font-display`, `rounded-lg`, `shadow-soft`). Never hard-code a template's colours in a component; use the utilities.
+- Tokens that change a template's voice without new markup: `--t-display-transform` and `--t-display-tracking` (the display face's case and tracking, read from the DESIGN.md hero/display typography and applied by `.font-display`), `--t-button-transform`/`--t-button-tracking` (`.font-button`), `--t-radius-button` (from `components.button-primary.rounded`), `--t-shadow-soft`/`--t-shadow-lift` and `--t-card-border` (defaults in `globals.css`; a layout overrides them when its DESIGN.md asks for hard offset shadows or bordered cards). Prefer a token over a per-template component variant.
+- CSS modules do not work here: the Turbopack rule in `next.config.ts` runs every CSS file through the Tailwind loader as plain CSS, so a `.module.css` import exports nothing and classes render as `undefined`. Template-specific keyframes go in a prefixed global stylesheet (`src/templates/<slug>/components/hero.css`, classes like `.fin-band`) imported by that template's `layout.tsx`.
+- Fonts load with `next/font/google` in the template's `layout.tsx`, matching the families named in its DESIGN.md. Images live in `templates/<slug>/assets/` and are imported statically in the content module, so `next/image` gets their dimensions and a blur placeholder.
+- **Every template is its own website.** It gets its own navigation and menu pattern, its own hero, its own section set and its own components, chosen from the component list in its DESIGN.md and from how that business sells. Never reuse another template's section order, nav, menu, hero or 3D band as-is; a visitor comparing two templates must not recognise the same page with different colours. Template-specific components live in `src/templates/<slug>/components/`, the page composes them in `src/app/<slug>/page.tsx`, and every one is listed in `COMPONENTS.md`.
+- `src/components/` is a toolkit, not a page kit: `Reveal`/`RevealGroup`/`Words`, `SmoothScroll`, `Watermark`, `MassingModel`, form validation patterns and the `ui.tsx` primitives. Reach for a toolkit piece when it fits the template's design; otherwise write the template's own. The architect's `Nav`, `Hero`, `ModelBand`, `ProcessSteps`, `Enquiry` and `sections/index.tsx` belong to the architect template and are not the default for anyone else.
+- Pick libraries per business, not per project: a carousel for a hotel, a compare slider for a renovator, a map for a logistics firm, charts for finance. Install what the design needs, keep it small, and record the choice and why in `COMPONENTS.md` under that template.
+- Icons come from `@phosphor-icons/react` using the `*Icon` export names (`/dist/ssr` in server components), weight `light`.
+- Deploy target is Vercel or a static export; there is no backend. Forms post nowhere until a handler is wired.
+- `COMPONENTS.md` is the component registry: every shared component with what it takes and what it animates, and every template's section order. Update it in the same change whenever a template page is built or a component is added, renamed or removed.
+
+## Motion and interaction (all templates)
+- Every template page gets a motion layer, built after the static page is approved. Keep it restrained: one authored moment per section, never an identical entrance on every block.
+- Stack, installed as npm packages:
+  - Lenis (`lenis/react`, `ReactLenis root`) for smooth scrolling, bridged to ScrollTrigger in `SmoothScroll`.
+  - GSAP + ScrollTrigger for anything scroll-linked: parallax, scrubbed reveals, progress lines, nav hide/show, pinning. Always inside `gsap.matchMedia()` with the `prefers-reduced-motion: no-preference` query, and cleaned up on unmount.
+  - Motion for React (`motion/react`) for enter, stagger and state-change animation. Use the shared `Reveal`, `RevealGroup` and `Words` components; they render visible on the server, hide only after mount when below the fold, and always show after 3.5 seconds.
+  - anime.js (`animejs`, v4 API: `animate`, `stagger`) for small timeline effects such as ghost numerals and success states.
+  - React Three Fiber + drei for at most one 3D object per page, and only where a 3D object is genuinely part of how that business shows its work (a massing model for an architect, a product for a shop). Most templates have none; a 3D band is never added to make a page feel richer. Load it with `next/dynamic` and `ssr: false`, probe for WebGL first, cap DPR at 2, pause the frame loop when off-screen, give the mount `role="img"` and a label.
+  - Real models: ask for a `.glb` export. Put it in `public/models/<slug>/` and its texture maps, converted to 1024px JPEGs, in `public/models/<slug>/tex/`. `MassingModel` rebuilds materials from their names, so keep the material names from the source tool ("Concrete ...", "Plaster ...", "Glass ...", "Aluminium ..."). Never load environment maps from a third-party CDN; the procedural room environment is built in.
+  - No model available: build the object in code under `src/components/models/<name>.ts` as a `THREE.Group` of named materials in the template colours, and reference it as `url: "procedural:<name>"`. The steel frame used by construction is the pattern.
+  - Animata (animata.design) is a pattern reference. Port a pattern into a shared component in the template tokens; do not paste its Tailwind colours.
+- Rules that always apply:
+  - The page must be complete and readable with JavaScript off and on the server render. Start states (opacity 0, offsets, clip-paths) are set from client code only, never in CSS.
+  - Honour `prefers-reduced-motion: reduce`: no Lenis, no GSAP timelines, no reveals, the 3D object renders one static frame, marquees stop.
+  - Animate `transform`, `opacity`, `clip-path` and masks only. Never `transition: all`, never `window.addEventListener('scroll')`; use ScrollTrigger, Motion `inView` or IntersectionObserver.
+  - Marquee: at most one per page, pauses on hover and focus, and has a visible Pause/Play button.
+  - No autoplaying video. No scroll hijacking that traps the user. Anchor links keep working with Lenis (`anchors` option) and the fixed-nav offset (`scroll-margin-top`).
+- **Hero signature moment (every template, never the same one twice).** The hero is the one place to be bold: an authored opening under 2 seconds, then a hero that keeps responding to scroll and pointer. The device must differ per template and suit the business: the architect's curtain wipe and masked lines, the builder's stamped headline and quote card sliding in, a split reveal, a typewriter, a product turning, a map drawing itself. Images get parallax; 3D is optional and only where the business calls for it. Reduced motion skips the whole sequence. The rest of the page stays quieter than the hero.
+- After adding motion, re-run the "before saying UI work is done" checks and confirm `npm run lint` and `npx tsc --noEmit` pass.

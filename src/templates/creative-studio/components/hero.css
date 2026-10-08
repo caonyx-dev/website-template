@@ -1,0 +1,6 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+.studio-letter { animation: studio-up .8s cubic-bezier(.16,1,.3,1) both; }
+.studio-rise { animation: studio-rise .7s cubic-bezier(.16,1,.3,1) .5s both; }
+@keyframes studio-up { from { transform: translateY(110%); } to { transform: none; } }
+@keyframes studio-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .studio-letter, .studio-rise { animation: none; } }

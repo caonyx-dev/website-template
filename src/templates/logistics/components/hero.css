@@ -1,0 +1,45 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+
+/* --- The opening ------------------------------------------------------- */
+/* The hero photograph settles out of a slow zoom while the headline lines rise through masks. */
+.log-zoom { animation: log-zoom 7s cubic-bezier(.22,1,.36,1) both; }
+.log-line { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.log-line > span { display: block; animation: log-rise 1s cubic-bezier(.16,1,.3,1) both; }
+.log-up { animation: log-up .8s cubic-bezier(.16,1,.3,1) both; }
+@keyframes log-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+@keyframes log-rise { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes log-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* --- The running band -------------------------------------------------- */
+/* One marquee, paused on hover and focus and by its own button, as the project motion rules require. */
+.log-marquee { display: flex; width: max-content; animation: log-scroll 34s linear infinite; }
+.log-marquee[data-paused="true"], .log-marquee:hover, .log-marquee:focus-within { animation-play-state: paused; }
+@keyframes log-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* --- The reference's petal mask on the service card photographs --------- */
+.log-petal { clip-path: path("M0 60C0 26.86 26.86 0 60 0h180v180c0 33.14-26.86 60-60 60H0V60Z"); }
+
+/* --- The dotted world ground behind the "who we are" band --------------- */
+.log-dots {
+  background-image: radial-gradient(currentColor 1.4px, transparent 1.4px);
+  background-size: 18px 18px;
+}
+
+/* --- The reference's stroke-only figure ---------------------------------- */
+/* Only hollow the glyphs where the stroke actually paints; elsewhere the figure stays solid and readable. */
+@supports (-webkit-text-stroke: 1px currentColor) {
+  .log-outline { -webkit-text-stroke: clamp(1.5px, 0.016em, 3px) currentColor; -webkit-text-fill-color: transparent; }
+}
+
+/* --- Focus rings ------------------------------------------------------- */
+/* Orange is 1.45:1 on itself and burgundy-dark bands need the opposite, so each ground names its own ring. */
+.log-on-dark { --t-focus: var(--t-primary); }
+.log-on-primary { --t-focus: var(--t-ink); }
+
+/* Tap behaviour the template was missing: no 300ms delay and no default blue flash. */
+.log-root { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .log-zoom, .log-line > span, .log-up { animation: none; }
+  .log-marquee { animation: none; }
+}

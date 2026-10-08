@@ -1,0 +1,16 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+/* The opening: the headline's lines rise through masks, the lead and the pill follow, and the two-part rule
+   beneath the headline draws itself out. The padding/negative-margin pair stops Cormorant's descenders clipping. */
+.law-line { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.law-line > span { display: block; animation: law-rise .95s cubic-bezier(.16,1,.3,1) both; }
+.law-up { animation: law-up .8s cubic-bezier(.16,1,.3,1) both; }
+.law-rule { transform-origin: left center; animation: law-draw 1s cubic-bezier(.16,1,.3,1) both; }
+@keyframes law-rise { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes law-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes law-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .law-line > span, .law-up, .law-rule { animation: none; }
+}
+
+/* Burgundy is 1.5:1 on the oxblood bands, so those sections take the brass focus ring instead. */
+.law-on-dark { --t-focus: var(--t-accent); }

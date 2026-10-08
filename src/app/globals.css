@@ -1,26 +1,105 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Per-template tokens are set as --t-* custom properties on each template's layout wrapper
+   (from templates/<slug>/DESIGN.md). @theme inline maps them to Tailwind utilities, so
+   bg-canvas, text-ink, font-display, rounded-lg, shadow-soft follow whichever template is active. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-canvas: var(--t-canvas);
+  --color-soft: var(--t-soft);
+  --color-soft2: var(--t-soft2);
+  --color-surface: var(--t-surface);
+  --color-ink: var(--t-ink);
+  --color-body: var(--t-body);
+  --color-mute: var(--t-mute);
+  --color-primary: var(--t-primary);
+  --color-on-primary: var(--t-on-primary);
+  --color-accent: var(--t-accent);
+  --color-accent-deep: var(--t-accent-deep);
+  --color-accent-soft: var(--t-accent-soft);
+  --color-hairline: var(--t-hairline);
+  --color-hairline-strong: var(--t-hairline-strong);
+  --color-on-dark-muted: var(--t-on-dark-muted);
+  --color-dark: var(--t-dark);
+  --color-on-dark: var(--t-on-dark);
+  --color-card: var(--t-card-border);
+  --font-display: var(--t-font-display);
+  --font-body: var(--t-font-body);
+  --radius-sm: var(--t-radius-sm);
+  --radius-md: var(--t-radius-md);
+  --radius-lg: var(--t-radius-lg);
+  --radius-button: var(--t-radius-button);
+  --shadow-soft: var(--t-shadow-soft);
+  --shadow-lift: var(--t-shadow-lift);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  /* Gallery chrome defaults; template layouts override every --t-* value. */
+  --t-canvas: #f3f1ec; --t-soft: #ebe8e1; --t-soft2: #e3dfd6; --t-surface: #ffffff;
+  --t-ink: #1d1b17; --t-body: #4a4843; --t-mute: #7d7a72;
+  --t-primary: #1d1b17; --t-on-primary: #ffffff;
+  --t-accent: #b45a2e; --t-accent-deep: #94461f; --t-accent-soft: #f0ded2;
+  --t-hairline: #dcd7cd; --t-hairline-strong: #b9b2a4; --t-on-dark-muted: #d9d4c9;
+  --t-font-display: var(--font-geist-sans), system-ui, sans-serif;
+  --t-font-body: var(--font-geist-sans), system-ui, sans-serif;
+  --t-radius-sm: 8px; --t-radius-md: 12px; --t-radius-lg: 20px; --t-radius-button: 9999px;
+  --t-dark: #1d1b17; --t-on-dark: #ffffff; --t-card-border: transparent;
+  --t-display-transform: none; --t-display-tracking: -0.02em;
+  --t-button-transform: none; --t-button-tracking: 0;
+  /* Soft layered shadows by default; a template layout may swap in hard offsets (see construction). */
+  --t-shadow-soft: 0 8px 24px color-mix(in srgb, var(--t-ink) 6%, transparent), 0 1px 2px color-mix(in srgb, var(--t-ink) 4%, transparent);
+  --t-shadow-lift: 0 18px 44px color-mix(in srgb, var(--t-ink) 12%, transparent), 0 2px 6px color-mix(in srgb, var(--t-ink) 5%, transparent);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* The display face carries its template's case and tracking (Space Grotesk tight lowercase, Barlow Condensed tracked caps).
+   Components layer, so an explicit tracking-* or normal-case utility still wins where a component needs it. */
+@layer components {
+  .font-display { text-transform: var(--t-display-transform); letter-spacing: var(--t-display-tracking); }
+  .font-button { text-transform: var(--t-button-transform); letter-spacing: var(--t-button-tracking); }
 }
+
+html { color-scheme: light; }
+/* No rubber-banding with a mouse or trackpad; touch keeps pull-to-refresh. */
+@media (pointer: fine) { html { overscroll-behavior: none; } }
+body { background: var(--t-canvas); color: var(--t-ink); font-family: var(--t-font-body); -webkit-font-smoothing: antialiased; caret-color: var(--t-accent); touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+::selection { background: var(--t-accent-soft); color: var(--t-ink); }
+:focus-visible { outline: 2px solid var(--t-focus, var(--t-accent-deep)); outline-offset: 3px; }
+[id] { scroll-margin-top: 104px; }
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Word and line masks used by the kinetic headline components */
+.mask-line { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.mask-line > * { display: inline-block; will-change: transform; }
+.mask-word { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .1em; margin-bottom: -.1em; }
+.mask-word > * { display: inline-block; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ModelBand chapter entrance (keyed element re-mounts per step) */
+@keyframes chapter-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.chapter-in { animation: chapter-in .55s cubic-bezier(.16,1,.3,1) both; }
+@media (prefers-reduced-motion: reduce) { .chapter-in { animation: none; } }
+
+/* Dropdown panels: a short rise each time they are shown (display:none → block restarts the animation). */
+@keyframes menu-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.menu-in { animation: menu-in .35s cubic-bezier(.16,1,.3,1) both; }
+/* Native <details> that open with a height transition where the browser supports it. */
+details.faq { interpolate-size: allow-keywords; }
+details.faq::details-content { block-size: 0; overflow: hidden; transition: block-size .45s cubic-bezier(.16,1,.3,1), content-visibility .45s allow-discrete; }
+details.faq[open]::details-content { block-size: auto; }
+@media (prefers-reduced-motion: reduce) { .menu-in { animation: none; } details.faq::details-content { transition: none; } }
+
+/* Load entrances for headers and heroes: letters and items rise through a mask, images settle from a zoom. */
+@keyframes rise-in { from { opacity: 0; transform: translateY(110%); } to { opacity: 1; transform: none; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pop-in { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+@keyframes settle { from { transform: scale(1.15); } to { transform: none; } }
+.rise-in { display: inline-block; animation: rise-in .8s cubic-bezier(.16,1,.3,1) both; }
+.fade-up { animation: fade-up .7s cubic-bezier(.16,1,.3,1) both; }
+.pop-in { animation: pop-in .6s cubic-bezier(.16,1,.3,1) both; }
+.settle { animation: settle 1.6s cubic-bezier(.16,1,.3,1) both; }
+@media (prefers-reduced-motion: reduce) { .rise-in, .fade-up, .pop-in, .settle { animation: none; } }

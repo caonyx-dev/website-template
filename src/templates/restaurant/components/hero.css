@@ -1,0 +1,11 @@
+/* Global (prefixed) because the Turbopack Tailwind rule in next.config.ts compiles every CSS file as plain CSS, so CSS modules export nothing. */
+/* Restaurant load sequence: the hero photograph settles from a slow zoom while the label, headline and buttons fade up. */
+/* The hero photograph is the largest paint on the page, so it is never faded in: only its scale settles. */
+.rest-settle { animation: rest-settle 1.6s cubic-bezier(.4,0,.2,1) both; }
+.rest-up { animation: rest-up .7s cubic-bezier(.4,0,.2,1) both; }
+@keyframes rest-settle { from { transform: scale(1.08); } to { transform: none; } }
+@keyframes rest-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rest-settle, .rest-up { animation: none; } }
+
+/* Olive is 2.3:1 on the near-black bands, so those sections take the gold ring instead. */
+.rest-on-dark { --t-focus: var(--t-accent); }
